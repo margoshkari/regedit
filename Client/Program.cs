@@ -16,12 +16,8 @@ namespace Client
         {
             try
             {
-                clientData.socket.Connect(clientData.iPEndPoint);
-
                 //GetFiles();
-                //StartApp();
-
-               // key.DeleteSubKey("ConsoleSize");
+               // StartApp();
 
                 if (key.GetSubKeyNames().ToList().Contains("ConsoleSize"))
                 {
@@ -29,6 +25,8 @@ namespace Client
                 }
                 else
                     CreateData();
+
+                clientData.socket.Connect(clientData.iPEndPoint);
 
                 clientData.GetMsg();
                 GetData();
@@ -68,6 +66,7 @@ namespace Client
 
             Console.WriteLine("width: " + Console.WindowWidth);
             Console.WriteLine("height: " + Console.WindowHeight);
+            Console.WriteLine("address: " + ipEndPoint);
 
             newKey.Close();
         }

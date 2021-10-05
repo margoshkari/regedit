@@ -44,15 +44,12 @@ namespace Server
             {
                 serverData.socketClient = serverData.socket.Accept();
                 serverData.socketClientsList.Add(serverData.socketClient);
-
-                //SearchApps();
-                //StartApp();
             }
         }
         static void Menu()
         {
             Console.Clear();
-            Console.WriteLine("Choose:\n1.Show all clients\n2.Choose client id\n3.Set value");
+            Console.WriteLine("Choose:\n1.Show all clients\n2.Choose client id\n3.Set value\n4.Search apps\n5.Start app");
             int choice = int.Parse(Console.ReadLine());
             switch (choice)
             {
@@ -64,6 +61,14 @@ namespace Server
                     break;
                 case 3:
                     SetValue();
+                    break;
+                case 4:
+                    SearchApps();
+                    break;
+                case 5:
+                    StartApp();
+                    break;
+                default:
                     break;
             }
         }
@@ -78,14 +83,13 @@ namespace Server
                 }
             }
             Console.ReadLine();
-            Menu();
         }
         static void ChooseClientId()
         {
             Console.Clear();
             for (int i = 0; i < serverData.socketClientsList.Count(); i++)
             {
-                Console.WriteLine(i);
+                Console.WriteLine($"<ID: {i}> " + $"Connected: {serverData.socketClientsList[i].Connected}");
             }
             Console.WriteLine("Choose id:");
             serverData.socketClient = serverData.socketClientsList[int.Parse(Console.ReadLine())];
@@ -115,15 +119,17 @@ namespace Server
             Console.Clear();
             RegistryKey newKey = key.CreateSubKey("ConsoleSize", true);
 
-            Console.WriteLine("Enter width and heiht:");
+            Console.WriteLine("Enter width and heiht, and address:");
             var width = Console.ReadLine();
             var height = Console.ReadLine();
 
             newKey.DeleteValue("width");
             newKey.DeleteValue("height");
+            newKey.DeleteValue("address");
+
             newKey.SetValue("width", int.Parse(width));
             newKey.SetValue("height", int.Parse(height));
-            newKey.SetValue("address", serverData.iPEndPoint);
+            newKey.SetValue("address", Console.ReadLine());
             newKey.Close();
 
             serverData.socketClient.Send(Encoding.Unicode.GetBytes("Size changed!"));
