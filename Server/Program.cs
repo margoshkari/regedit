@@ -49,7 +49,7 @@ namespace Server
         static void Menu()
         {
             Console.Clear();
-            Console.WriteLine("Choose:\n1.Show all clients\n2.Choose client id\n3.Set value\n4.Search apps\n5.Start app");
+            Console.WriteLine("Choose:\n1.Show all clients\n2.Choose client id\n3.Set value");
             int choice = int.Parse(Console.ReadLine());
             switch (choice)
             {
@@ -61,12 +61,6 @@ namespace Server
                     break;
                 case 3:
                     SetValue();
-                    break;
-                case 4:
-                    SearchApps();
-                    break;
-                case 5:
-                    StartApp();
                     break;
                 default:
                     break;
@@ -93,26 +87,6 @@ namespace Server
             }
             Console.WriteLine("Choose id:");
             serverData.socketClient = serverData.socketClientsList[int.Parse(Console.ReadLine())];
-        }
-        static void SearchApps()
-        {
-            string[] tmp = Directory.GetFiles(@$"C:\Users\" + $"{Environment.UserName}" + @"\Desktop", "*", SearchOption.AllDirectories);
-            serverData.SendMsg(tmp);
-        }
-        static void StartApp()
-        {
-            string appName = serverData.GetMsg();
-            string path = string.Empty;
-            foreach (var item in Directory.GetFiles(@$"C:\Users\" + $"{Environment.UserName}" + @"\Desktop", "*", SearchOption.AllDirectories).ToList())
-            {
-                if (item.Contains(appName))
-                    path = Path.GetDirectoryName(item);
-            }
-
-            Process.Start(new ProcessStartInfo(path + @$"\{appName}")
-            {
-                UseShellExecute = true
-            });
         }
         static void SetValue()
         {
